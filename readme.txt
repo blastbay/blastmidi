@@ -2,7 +2,7 @@ BlastMidi
 
 A library of routines for working with Midi files.
 
-Copyright Blastbay Studios (Philip Bennefall) 2014.
+Copyright Blastbay Studios (Philip Bennefall) 2014 - 2015.
 
 
 BlastMidi is a C library that makes it easy to work with Midi files. Currently the library only supports parsing, but support for writing Midi files is planned as well.

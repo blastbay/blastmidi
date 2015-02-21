@@ -4,7 +4,7 @@
 *
 * A library of routines for working with Midi files.
 *
-*          Copyright Blastbay Studios (Philip Bennefall) 2014.
+*          Copyright Blastbay Studios (Philip Bennefall) 2014 - 2015.
 * Distributed under the Boost Software License, Version 1.0.
 *    (See accompanying file LICENSE_1_0.txt or copy at
 *          http://www.boost.org/LICENSE_1_0.txt)
@@ -323,31 +323,42 @@ uint8_t blastmidi_event_create_channel_event(blastmidi* instance, uint8_t channe
     uint8_t result = 0;
     uint8_t data[2];
     unsigned int data_size = 0;
+    uint8_t* temp_ptr8 = NULL;
+    uint16_t temp16 = 0;
     switch(subtype)
     {
         case BLASTMIDI_CHANNEL_NOTE_OFF:
         case BLASTMIDI_CHANNEL_NOTE_ON:
         case BLASTMIDI_CHANNEL_NOTE_AFTERTOUCH:
         case BLASTMIDI_CHANNEL_CONTROLLER:
+            data_size = 2;
+            data[0] = param_1;
+            data[1] = param_2;
+            break;
         case BLASTMIDI_CHANNEL_PITCH_BEND:
             /*
-            * Todo: Handle pitch bend events properly. Must extract last 7 bits of both data bytes and combine them into an unsigned int.
+            * Extract the last 7 bits of both data bytes and combine them into an unsigned 16 bit integer.
+            * The resulting integer will be in the native host endian order.
             */
             data_size = 2;
+            param_1 = extract_bits_8(param_1, 2, 8);
+            param_2 = extract_bits_8(param_2, 2, 8);
+            temp16 = param_1;
+            temp16 = temp16 << 8;
+            temp16 |= (param_2 << 1);
+            temp16 = temp16 >> 1;
+            temp_ptr8 = (uint8_t*)&temp16;
+            data[0] = temp_ptr8[0];
+            data[1] = temp_ptr8[1];
             break;
         case BLASTMIDI_CHANNEL_PROGRAM_CHANGE:
         case BLASTMIDI_CHANNEL_CHANNEL_AFTERTOUCH:
             data_size = 1;
+            data[0] = param_1;
             break;
         default:
             return BLASTMIDI_INVALIDPARAM;
     };
-
-    data[0] = param_1;
-    if(data_size == 2)
-    {
-        data[1] = param_2;
-    }
 
     result = allocate_event(instance, BLASTMIDI_CHANNEL_EVENT, subtype, data, data_size, &output);
     if(result != BLASTMIDI_OK)
@@ -895,9 +906,6 @@ uint8_t read_track_events(blastmidi* instance, uint16_t track_id)
                     case BLASTMIDI_CHANNEL_NOTE_AFTERTOUCH:
                     case BLASTMIDI_CHANNEL_CONTROLLER:
                     case BLASTMIDI_CHANNEL_PITCH_BEND:
-                        /*
-                        * Todo: Parse the pitch bend event properly, probably in its own separate case.
-                        */
                     {
                         uint8_t first = 0;
                         uint8_t second = 0;

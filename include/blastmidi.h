@@ -3,7 +3,7 @@
 *
 * A library of routines for working with Midi files.
 *
-*          Copyright Blastbay Studios (Philip Bennefall) 2014.
+*          Copyright Blastbay Studios (Philip Bennefall) 2014 - 2015.
 * Distributed under the Boost Software License, Version 1.0.
 *    (See accompanying file LICENSE_1_0.txt or copy at
 *          http://www.boost.org/LICENSE_1_0.txt)
@@ -135,6 +135,10 @@ enum blastmidi_event_types
 *
 * data is a pointer to the first data byte in the event, and data_size specifies the number of bytes present.
 * If data_size is 0, do not access data.
+*
+* If type is BLASTMIDI_CHANNEL_EVENT and subtype is BLASTMIDI_CHANNEL_PITCH_BEND, data should be interpreted as a
+* uint16_t (in native endian byte order) representing the bend amount.
+* The range is between 0 and 16383 (inclusive) where values below 8192 decrease the pitch, and values above increase it.
 *
 * end_of_sysex is only applicable when type is BLASTMIDI_SYSEX_EVENT.
 * System exclusive messages are sometimes split into several events if the amount of data is large.
@@ -389,7 +393,7 @@ uint8_t blastmidi_get_last_event_on_track(blastmidi* instance, uint16_t track_id
 * This function gets the next event from the given track.
 * event is expected to initially contain a pointer to an event on the given track, based on which the next one will be retrieved.
 * The event pointer is updated so that it points to the next event on the track after the call to this function completes.
-* If there is no event present after the current one on the track, event will be set to point to a NULL pointer.
+* If there is no event present after the current one on the track, event will be set to point to NULL.
 * Note that the retrieved event is not copied. You should therefore not modify it , as it is still owned by the blastmidi instance.
 */
 uint8_t blastmidi_get_next_event_on_track(blastmidi* instance, blastmidi_event** event);
@@ -399,7 +403,7 @@ uint8_t blastmidi_get_next_event_on_track(blastmidi* instance, blastmidi_event**
 * This function gets the previous event from the given track.
 * event is expected to initially contain a pointer to an event on the given track, based on which the previous one will be retrieved.
 * The event pointer is updated so that it points to the previous event on the track after the call to this function completes.
-* If there is no event present before the current one on the track, event will be set to point to a NULL pointer.
+* If there is no event present before the current one on the track, event will be set to point to NULL.
 * Note that the retrieved event is not copied. You should therefore not modify it , as it is still owned by the blastmidi instance.
 */
 uint8_t blastmidi_get_previous_event_on_track(blastmidi* instance, blastmidi_event** event);
