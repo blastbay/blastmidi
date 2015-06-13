@@ -29,27 +29,6 @@ int is_little_endian ()
 }
 
 /*
-*          uint32_t create_bitmask_32(uint8_t a, uint8_t b);
-* Create a 32 bit bitmask going from bit a to bit b.
-* a must be lower than or equal to b.
-* The return value is an unsigned 32 bit integer with the given bits set and all other bits unset.
-*/
-uint32_t create_bitmask_32(uint8_t a, uint8_t b)
-{
-    uint32_t mask = 0;
-    uint8_t i;
-
-    assert(a <= b);
-    assert(a >= 1 && a <= 32 && b >= 1 && b <= 32);
-
-    for (i = a; i <= b; ++i)
-    {
-        mask |= 1 << i;
-    }
-    return mask;
-}
-
-/*
 *          uint32_t extract_bits_32(uint32_t value, uint8_t a, uint8_t b);
 * Extract bits from a 32 bit number.
 * a is the starting bit and b is the ending bit to extract from the whole.
@@ -77,27 +56,6 @@ uint32_t swap_32(uint32_t x)
 {
     x = (x & 0x0000FFFF) << 16 | (x & 0xFFFF0000) >> 16;
     return (x & 0x00FF00FF) << 8 | (x & 0xFF00FF00) >> 8;
-}
-
-/*
-*          uint16_t create_bitmask_16(uint8_t a, uint8_t b);
-* Create a 16 bit bitmask going from bit a to bit b.
-* a must be lower than or equal to b.
-* The return value is an unsigned 16 bit integer with the given bits set and all other bits unset.
-*/
-uint16_t create_bitmask_16(uint8_t a, uint8_t b)
-{
-    uint16_t mask = 0;
-    uint8_t i;
-
-    assert(a <= b);
-    assert(a >= 1 && a <= 16 && b >= 1 && b <= 16);
-
-    for (i = a; i <= b; ++i)
-    {
-        mask |= 1 << i;
-    }
-    return mask;
 }
 
 /*

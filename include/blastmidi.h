@@ -130,7 +130,7 @@ enum blastmidi_event_types
 * If type is BLASTMIDI_SYSEX_EVENT, subtype is not used.
 *
 * If type is BLASTMIDI_CHANNEL_EVENT, channel indicates the channel to which this event applies.
-* If type is BLASTMIDI_META_EVENT and subtype is BLASTMIDI_META_MIDI_CHANNEL_PREFIX, channel specifies the channel being refered to.
+* If type is BLASTMIDI_META_EVENT and subtype is BLASTMIDI_META_MIDI_CHANNEL_PREFIX, channel specifies the channel being referred to.
 * Otherwise, channel is not used.
 *
 * data is a pointer to the first data byte in the event, and data_size specifies the number of bytes present.
@@ -368,7 +368,7 @@ uint8_t blastmidi_add_event_to_beginning_of_track(blastmidi* instance, uint16_t 
 * track_id starts at 0 and specifies the track to which this event should be added.
 * The new event is inserted at the very end of the track, with the appropriate delta time (see below).
 * delta_time is the amount of time that must pass from the current end of the track until this new event occurs.
-* If the track is empty, the new event is added as the first event on the track with teh appropriate delta time.
+* If the track is empty, the new event is added as the first event on the track with the appropriate delta time.
 */
 uint8_t blastmidi_add_event_to_end_of_track(blastmidi* instance, uint16_t track_id, blastmidi_event* event, uint32_t delta_time);
 
