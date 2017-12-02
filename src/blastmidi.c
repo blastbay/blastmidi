@@ -186,7 +186,6 @@ uint8_t read_24_bit ( blastmidi* instance, uint32_t* buffer )
 
 uint8_t read_variable_number ( blastmidi* instance, uint32_t* buffer )
 {
-    uint8_t* buffer_pointer = ( uint8_t* ) buffer;
     uint8_t i;
 
     *buffer = 0;
@@ -195,28 +194,23 @@ uint8_t read_variable_number ( blastmidi* instance, uint32_t* buffer )
     {
 
         uint8_t keep_going = 0;
+        uint8_t current;
 
-        uint8_t result = read_byte ( instance, &buffer_pointer[i] );
+        uint8_t result = read_byte ( instance, &current );
         if ( result != BLASTMIDI_OK )
         {
             return result;
         }
-        keep_going = extract_bits_8 ( buffer_pointer[i], 1, 1 );
-        buffer_pointer[i] = extract_bits_8 ( buffer_pointer[i], 2, 8 );
-        if ( keep_going == 0 )
-        {
-            break;
-        }
+        keep_going = extract_bits_8 ( current, 1, 1 );
         if ( keep_going == 1 && i == 3 )
         {
             return BLASTMIDI_INVALIDCHUNK;
         }
-    }
-
-    *buffer = convert_endian_32 ( *buffer, instance->endian_flag );
-    if ( i < 3 )
-    {
-        *buffer = extract_bits_32 ( *buffer, 1, ( ( i + 1 ) * 8 ) );
+        *buffer = ( ( *buffer ) << 7 ) | ( current & 0x7f );
+        if ( !keep_going )
+        {
+            break;
+        }
     }
     return BLASTMIDI_OK;
 }
