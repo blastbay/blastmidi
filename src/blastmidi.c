@@ -1319,6 +1319,10 @@ uint8_t blastmidi_add_event ( blastmidi* instance, uint16_t track_id, blastmidi_
         add_after->next = event;
         event->previous = add_after;
         event->next = old_next;
+        if ( instance->track_ends[track_id] == add_after )
+        {
+            instance->track_ends[track_id] = event;
+        }
     }
     else
     {
@@ -1326,6 +1330,10 @@ uint8_t blastmidi_add_event ( blastmidi* instance, uint16_t track_id, blastmidi_
         event->previous = NULL;
         event->next = old_beginning;
         instance->tracks[track_id] = event;
+        if ( instance->track_ends[track_id] == NULL )
+        {
+            instance->track_ends[track_id] = event;
+        }
     }
     return BLASTMIDI_OK;
 }
