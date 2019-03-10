@@ -96,7 +96,7 @@ enum blastmidi_callback_actions
 * The callback should return 0 on failure and anything else on success.
 * The callback must not invoke any function that operates on the blastmidi instance with which this callback is associated.
 */
-typedef int blastmidi_data_callback(int, size_t, uint8_t*, void*);
+typedef int blastmidi_data_callback ( int, size_t, uint8_t*, void* );
 
 /*
 * The custom memory allocation functions.
@@ -104,8 +104,8 @@ typedef int blastmidi_data_callback(int, size_t, uint8_t*, void*);
 * These must have the same signature as malloc and free.
 * See the blastmidi_initialize function for more information on how to set these.
 */
-typedef void* blastmidi_custom_malloc(size_t);
-typedef void blastmidi_custom_free(void*);
+typedef void* blastmidi_custom_malloc ( size_t );
+typedef void blastmidi_custom_free ( void* );
 
 /*
 * Midi event types enum.
@@ -226,7 +226,7 @@ typedef struct blastmidi
 * If one of these function pointers is not NULL, the other one must also be valid.
 * The return value is one of the defined BlastMidi error codes.
 */
-uint8_t blastmidi_initialize(blastmidi* instance, blastmidi_custom_malloc* user_malloc, blastmidi_custom_free* user_free);
+uint8_t blastmidi_initialize ( blastmidi* instance, blastmidi_custom_malloc* user_malloc, blastmidi_custom_free* user_free );
 
 /*
 *          void blastmidi_set_data_callback(blastmidi* instance, blastmidi_data_callback* callback, void* user_data);
@@ -236,48 +236,48 @@ uint8_t blastmidi_initialize(blastmidi* instance, blastmidi_custom_malloc* user_
 * For more information on this callback function, see the comment above.
 * The third parameter is a user controlled void* pointer which is passed along to the callback.
 */
-void blastmidi_set_data_callback(blastmidi* instance, blastmidi_data_callback* callback, void* user_data);
+void blastmidi_set_data_callback ( blastmidi* instance, blastmidi_data_callback* callback, void* user_data );
 
 /*
 *          uint8_t blastmidi_read(blastmidi* instance)
 * Invoke this function to read a new Midi file stream.
 * The return value is one of the defined BlastMidi error codes.
 */
-uint8_t blastmidi_read(blastmidi* instance);
+uint8_t blastmidi_read ( blastmidi* instance );
 
 /*
 * void blastmidi_whipe_track(blastmidi* instance, unsigned int track);
 * Removes all events from the given track. The track number starts at 0.
 * If the track number does not refer to an existing track or if the track is already empty, this function is a no-op.
 */
-void blastmidi_whipe_track(blastmidi* instance, unsigned int track);
+void blastmidi_whipe_track ( blastmidi* instance, unsigned int track );
 
 /*
 *         void blastmidi_free(blastmidi* instance);
 * Frees all resources associated with the given instance.
 */
-void blastmidi_free(blastmidi* instance);
+void blastmidi_free ( blastmidi* instance );
 
 /*
 * uint8_t blastmidi_event_create_channel_event(blastmidi* instance, uint8_t channel, uint8_t subtype, uint8_t param_1, uint8_t param_2, blastmidi_event** event);
 * Creates a Midi channel event. Depending on the event, param_1 and param_2 may or may not be used.
 * After a successful call to this function, event points to an initialized blastmidi_event structure representing the new event.
 */
-uint8_t blastmidi_event_create_channel_event(blastmidi* instance, uint8_t channel, uint8_t subtype, uint8_t param_1, uint8_t param_2, blastmidi_event** event);
+uint8_t blastmidi_event_create_channel_event ( blastmidi* instance, uint8_t channel, uint8_t subtype, uint8_t param_1, uint8_t param_2, blastmidi_event** event );
 
 /*
 * uint8_t blastmidi_event_create_meta_sequence_number_event(blastmidi* instance, uint16_t sequence_number, blastmidi_event** event);
 * Creates a meta sequence number event.
 * After a successful call to this function, event points to an initialized blastmidi_event structure representing the new event.
 */
-uint8_t blastmidi_event_create_meta_sequence_number_event(blastmidi* instance, uint16_t sequence_number, blastmidi_event** event);
+uint8_t blastmidi_event_create_meta_sequence_number_event ( blastmidi* instance, uint16_t sequence_number, blastmidi_event** event );
 
 /*
 * uint8_t blastmidi_event_create_meta_tempo_event(blastmidi* instance, uint32_t tempo, blastmidi_event** event);
 * Creates a meta tempo event. The tempo is specified as the number of microseconds per quarter note.
 * After a successful call to this function, event points to an initialized blastmidi_event structure representing the new event.
 */
-uint8_t blastmidi_event_create_meta_tempo_event(blastmidi* instance, uint32_t tempo, blastmidi_event** event);
+uint8_t blastmidi_event_create_meta_tempo_event ( blastmidi* instance, uint32_t tempo, blastmidi_event** event );
 
 /*
 * uint8_t blastmidi_event_create_meta_data_event(blastmidi* instance, uint8_t subtype, uint8_t* data, unsigned int data_size, blastmidi_event** event);
@@ -288,7 +288,7 @@ uint8_t blastmidi_event_create_meta_tempo_event(blastmidi* instance, uint32_t te
 * The contents of data is copied into internal storage, so the memory does not need to be valid once this function returns.
 * After a successful call to this function, event points to an initialized blastmidi_event structure representing the new event.
 */
-uint8_t blastmidi_event_create_meta_data_event(blastmidi* instance, uint8_t subtype, uint8_t* data, unsigned int data_size, blastmidi_event** event);
+uint8_t blastmidi_event_create_meta_data_event ( blastmidi* instance, uint8_t subtype, uint8_t* data, unsigned int data_size, blastmidi_event** event );
 
 /*
 * uint8_t blastmidi_event_create_meta_midi_channel_prefix_event(blastmidi *instance, uint8_t channel, blastmidi_event **event);
@@ -297,7 +297,7 @@ uint8_t blastmidi_event_create_meta_data_event(blastmidi* instance, uint8_t subt
 * The effect of a Midi channel prefix event goes away either when another channel prefix event or any non-meta event occurs.
 * After a successful call to this function, event points to an initialized blastmidi_event structure representing the new event.
 */
-uint8_t blastmidi_event_create_meta_midi_channel_prefix_event(blastmidi* instance, uint8_t channel, blastmidi_event** event);
+uint8_t blastmidi_event_create_meta_midi_channel_prefix_event ( blastmidi* instance, uint8_t channel, blastmidi_event** event );
 
 /*
 * uint8_t blastmidi_event_create_meta_time_signature_event(blastmidi *instance, uint8_t numerator, uint8_t denominator, uint8_t metronome, uint8_t thirtyseconds_per_24_signals, blastmidi_event **event);
@@ -312,7 +312,7 @@ uint8_t blastmidi_event_create_meta_midi_channel_prefix_event(blastmidi* instanc
 * nearly always be 8 since there are 8 thirtysecond notes per quarter. Only use a value other than 8 if you have a good reason.
 * After a successful call to this function, event points to an initialized blastmidi_event structure representing the new event.
 */
-uint8_t blastmidi_event_create_meta_time_signature_event(blastmidi* instance, uint8_t numerator, uint8_t denominator, uint8_t metronome, uint8_t thirtyseconds_per_24_signals, blastmidi_event** event);
+uint8_t blastmidi_event_create_meta_time_signature_event ( blastmidi* instance, uint8_t numerator, uint8_t denominator, uint8_t metronome, uint8_t thirtyseconds_per_24_signals, blastmidi_event** event );
 
 /*
 * uint8_t blastmidi_event_create_meta_key_signature_event(blastmidi* instance, int8_t key, uint8_t scale, blastmidi_event** event);
@@ -322,7 +322,7 @@ uint8_t blastmidi_event_create_meta_time_signature_event(blastmidi* instance, ui
 * scale is set to 0 for major and 1 for minor.
 * After a successful call to this function, event points to an initialized blastmidi_event structure representing the new event.
 */
-uint8_t blastmidi_event_create_meta_key_signature_event(blastmidi* instance, int8_t key, uint8_t scale, blastmidi_event** event);
+uint8_t blastmidi_event_create_meta_key_signature_event ( blastmidi* instance, int8_t key, uint8_t scale, blastmidi_event** event );
 
 /*
 * Todo: Add a constructor function for the SMPTE offset meta event.
@@ -336,7 +336,7 @@ uint8_t blastmidi_event_create_meta_key_signature_event(blastmidi* instance, int
 * The contents of data is copied into internal storage, so the memory does not need to be valid once this function returns.
 * After a successful call to this function, event points to an initialized blastmidi_event structure representing the new event.
 */
-uint8_t blastmidi_event_create_sysex_event(blastmidi* instance, uint8_t* data, unsigned int data_size, uint8_t end_of_sysex, blastmidi_event** event);
+uint8_t blastmidi_event_create_sysex_event ( blastmidi* instance, uint8_t* data, unsigned int data_size, uint8_t end_of_sysex, blastmidi_event** event );
 
 /*
 * uint8_t blastmidi_add_event(blastmidi* instance, uint16_t track_id, blastmidi_event* event, uint32_t delta_time, blastmidi_event* add_after);
@@ -349,7 +349,7 @@ uint8_t blastmidi_event_create_sysex_event(blastmidi* instance, uint8_t* data, u
 * delta_time is the number of ticks that must elapse between add_after and the new event.
 * If add_after is NULL, delta_time is the amount of time that must pass from the beginning of the track until the new event occurs.
 */
-uint8_t blastmidi_add_event(blastmidi* instance, uint16_t track_id, blastmidi_event* event, uint32_t delta_time, blastmidi_event* add_after);
+uint8_t blastmidi_add_event ( blastmidi* instance, uint16_t track_id, blastmidi_event* event, uint32_t delta_time, blastmidi_event* add_after );
 
 /*
 * uint8_t blastmidi_add_event_to_beginning_of_track(blastmidi* instance, uint16_t track_id, blastmidi_event* event, uint32_t delta_time);
@@ -359,7 +359,7 @@ uint8_t blastmidi_add_event(blastmidi* instance, uint16_t track_id, blastmidi_ev
 * The new event is inserted at the very beginning of the track, with the appropriate delta time in between (see below).
 * delta_time is the amount of time that must pass from the beginning of the track until this new event occurs.
 */
-uint8_t blastmidi_add_event_to_beginning_of_track(blastmidi* instance, uint16_t track_id, blastmidi_event* event, uint32_t delta_time);
+uint8_t blastmidi_add_event_to_beginning_of_track ( blastmidi* instance, uint16_t track_id, blastmidi_event* event, uint32_t delta_time );
 
 /*
 * uint8_t blastmidi_add_event_to_end_of_track(blastmidi* instance, uint16_t track_id, blastmidi_event* event, uint32_t delta_time);
@@ -370,7 +370,7 @@ uint8_t blastmidi_add_event_to_beginning_of_track(blastmidi* instance, uint16_t 
 * delta_time is the amount of time that must pass from the current end of the track until this new event occurs.
 * If the track is empty, the new event is added as the first event on the track with the appropriate delta time.
 */
-uint8_t blastmidi_add_event_to_end_of_track(blastmidi* instance, uint16_t track_id, blastmidi_event* event, uint32_t delta_time);
+uint8_t blastmidi_add_event_to_end_of_track ( blastmidi* instance, uint16_t track_id, blastmidi_event* event, uint32_t delta_time );
 
 /*
 * uint8_t blastmidi_get_first_event_on_track(blastmidi* instance, uint16_t track_id, blastmidi_event** event);
@@ -378,7 +378,7 @@ uint8_t blastmidi_add_event_to_end_of_track(blastmidi* instance, uint16_t track_
 * track_id starts at 0 and specifies the track from which the event should be retrieved.
 * Note that the event is not copied. You should therefore not modify the event, as it is still owned by the blastmidi instance.
 */
-uint8_t blastmidi_get_first_event_on_track(blastmidi* instance, uint16_t track_id, blastmidi_event** event);
+uint8_t blastmidi_get_first_event_on_track ( blastmidi* instance, uint16_t track_id, blastmidi_event** event );
 
 /*
 * uint8_t blastmidi_get_last_event_on_track(blastmidi* instance, uint16_t track_id, blastmidi_event** event);
@@ -386,7 +386,7 @@ uint8_t blastmidi_get_first_event_on_track(blastmidi* instance, uint16_t track_i
 * track_id starts at 0 and specifies the track from which the event should be retrieved.
 * Note that the event is not copied. You should therefore not modify the event, as it is still owned by the blastmidi instance.
 */
-uint8_t blastmidi_get_last_event_on_track(blastmidi* instance, uint16_t track_id, blastmidi_event** event);
+uint8_t blastmidi_get_last_event_on_track ( blastmidi* instance, uint16_t track_id, blastmidi_event** event );
 
 /*
 * uint8_t blastmidi_get_next_event_on_track(blastmidi* instance, blastmidi_event** event);
@@ -396,7 +396,7 @@ uint8_t blastmidi_get_last_event_on_track(blastmidi* instance, uint16_t track_id
 * If there is no event present after the current one on the track, event will be set to point to NULL.
 * Note that the retrieved event is not copied. You should therefore not modify it , as it is still owned by the blastmidi instance.
 */
-uint8_t blastmidi_get_next_event_on_track(blastmidi* instance, blastmidi_event** event);
+uint8_t blastmidi_get_next_event_on_track ( blastmidi* instance, blastmidi_event** event );
 
 /*
 * uint8_t blastmidi_get_previous_event_on_track(blastmidi* instance, blastmidi_event** event);
@@ -406,7 +406,7 @@ uint8_t blastmidi_get_next_event_on_track(blastmidi* instance, blastmidi_event**
 * If there is no event present before the current one on the track, event will be set to point to NULL.
 * Note that the retrieved event is not copied. You should therefore not modify it , as it is still owned by the blastmidi instance.
 */
-uint8_t blastmidi_get_previous_event_on_track(blastmidi* instance, blastmidi_event** event);
+uint8_t blastmidi_get_previous_event_on_track ( blastmidi* instance, blastmidi_event** event );
 
 /*
 * uint8_t blastmidi_remove_event_from_track(blastmidi* instance, uint16_t track_id, blastmidi_event* event);
@@ -415,7 +415,7 @@ uint8_t blastmidi_get_previous_event_on_track(blastmidi* instance, blastmidi_eve
 * The event must have been added to the given track in the blastmidi instance prior to this call.
 * The event will be removed from the given track, and all its associated resources will be automatically freed.
 */
-uint8_t blastmidi_remove_event_from_track(blastmidi* instance, uint16_t track_id, blastmidi_event* event);
+uint8_t blastmidi_remove_event_from_track ( blastmidi* instance, uint16_t track_id, blastmidi_event* event );
 
 /*
 *         void blastmidi_event_free(blastmidi* instance, blastmidi_event* event);
@@ -426,6 +426,6 @@ uint8_t blastmidi_remove_event_from_track(blastmidi* instance, uint16_t track_id
 * The blastmidi instance takes ownership of the event as soon as it is associated.
 * To remove an event that has been added to a track, call blastmidi_remove_event_from_track instead.
 */
-void blastmidi_event_free(blastmidi* instance, blastmidi_event* event);
+void blastmidi_event_free ( blastmidi* instance, blastmidi_event* event );
 
 #endif /* BLASTMIDI_H */
